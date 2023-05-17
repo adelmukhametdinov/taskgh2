@@ -1,25 +1,24 @@
-name: Remove .env References
+name: My Workflow
 
 on:
   push:
     branches:
-      - main # Replace with your branch name
+      - main
 
 jobs:
-  remove_env_references:
+  my_job:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      - name: Remove .env references
-        run: |
-          find . -type f -name "*.js" -o -name "*.ts" | xargs sed -i '/\.env/d'
-          git add -u
-          git commit -m "Remove references to .env file" || echo "No changes to commit"
+  grade_learner_job:
+    needs: my_job
+    runs-on: ubuntu-latest
 
-      - name: Push changes
-        uses: ad-m/github-push-action@v0.5.0
+    steps:
+      - name: Run grade-learner
+        uses: adelmukhametdinov/taskgh2
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          my_parameter: "some value"
